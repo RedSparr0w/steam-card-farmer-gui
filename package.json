@@ -2,14 +2,7 @@
   "name": "scf",
   "description": "Automatically farms card drops for Steam games you own with remaining drops",
   "version": "2.0.0",
-  "bin": {
-    "steamcardfarmer": "./farmer.js"
-  },
   "preferGlobal": true,
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DoctorMcKay/Steam-Card-Farmer.git"
-  },
   "dependencies": {
     "cheerio": "^0.18.0",
     "steam-user": "^3.3.0",
@@ -17,38 +10,11 @@
     "request": "^2.51.0"
   },
   "license": "MIT",
-  "gitHead": "1ebf6c229c1d6d4f4ec4a3e61a01fde548fecabe",
-  "bugs": {
-    "url": "https://github.com/DoctorMcKay/Steam-Card-Farmer/issues"
-  },
   "scripts": {
-    "example": "node example.js",
-    "test": "node farmer-test.js"
+    "start" : "nwbuild -v v0.12.3 -r \"./\"",
+	"preinstall": "npm list nw-builder -g || npm install nw-builder -g",
+	"build": "nwbuild -v v0.12.3 -o \"../builds\" -p win64,win32 --winIco \"./logo.ico\" \"./\""
   },
-  "homepage": "https://github.com/DoctorMcKay/Steam-Card-Farmer#readme",
-  "_id": "steam-card-farmer@2.0.0",
-  "scripts": {},
-  "_shasum": "cad39f5b8387cbfd4c49b797791d1a3b0b7c2ec3",
-  "_from": "steam-card-farmer@latest",
-  "_npmVersion": "3.5.2",
-  "_nodeVersion": "5.1.1",
-  "_npmUser": {
-    "name": "doctormckay",
-    "email": "mckay@doctormckay.com"
-  },
-  "dist": {
-    "shasum": "cad39f5b8387cbfd4c49b797791d1a3b0b7c2ec3",
-    "tarball": "http://registry.npmjs.org/steam-card-farmer/-/steam-card-farmer-2.0.0.tgz"
-  },
-  "maintainers": [
-    {
-      "name": "doctormckay",
-      "email": "mckay@doctormckay.com"
-    }
-  ],
-  "directories": {},
-  "_resolved": "https://registry.npmjs.org/steam-card-farmer/-/steam-card-farmer-2.0.0.tgz",
-  "readme": "ERROR: No README data found!",
   "main": "index.html", 
   "window": {
     "frame": false,
