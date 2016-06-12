@@ -302,8 +302,7 @@ function checkMinPlaytime() {
 						checkCardApps();
 					} else {
 						g_OwnedApps = g_OwnedApps.concat(lowAppsToIdle);
-						log(lowAppsToIdle);
-						log("Idling " + lowAppsToIdle.length + " app" + (lowAppsToIdle.length == 1 ? '' : 's') + " up to 2 hours.\nYou likely won't receive any card drops in this time.\nThis will take " + (2.0 - minPlaytime) + " hours.");
+						new Notification("Steam Card Farmer",{body:"Idling " + lowAppsToIdle.length + " app" + (lowAppsToIdle.length == 1 ? '' : 's') + " up to 2 hours.\nYou likely won't receive any card drops in this time.\nThis will take " + (2.0 - minPlaytime) + " hours.",icon:"logo.png"});
 						for(i=0;i<lowAppsToIdle.length;i++){
 							$("#MultiAppsWindow ul").append('<li><div class="li-img"><img src="http://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/'+lowHourApps[i].appid+'/'+lowHourApps[i].icon+'.jpg" alt="Image Not Found" /></div><div class="li-text"><h4 class="li-head">'+lowHourApps[i].name+'</h4><p class="li-sub">'+lowHourApps[i].playtime+' hrs on record</p></div></li>');
 						}
@@ -322,7 +321,6 @@ function checkMinPlaytime() {
 		});
 	});
 }
-
 client.on('newItems', function(count) {
 	if(g_OwnedApps.length == 0 || count == 0) {
 		return;
@@ -402,7 +400,7 @@ function checkCardApps() {
 					title.find('.badge_view_details').remove();
 					title = title.text().trim();
 					
-					log("Idling app " + appid + " \"" + title + "\" - " + match[1] + " drop" + (match[1] == 1 ? '' : 's') + " remaining");
+					new Notification("Steam Card Farmer",{body:"Idling app " + appid + " \"" + title + "\" - " + match[1] + " drop" + (match[1] == 1 ? '' : 's') + " remaining",icon:"logo.png"});
 					client.gamesPlayed(parseInt(appid, 10));
 					$('#CurrentAppWindow img').attr("src","http://cdn.akamai.steamstatic.com/steam/apps/" + appid + "/header.jpg");
 					$('#CurrentAppWindow h4').html(title);
@@ -418,9 +416,8 @@ function checkCardApps() {
 					log("Checking page "+g_Page);
 					checkMinPlaytime();
 				} else {
-					log("All card drops recieved!");
-					log("Shutting Down.")
-					//shutdown(0);
+					new Notification("Steam Card Farmer",{body:"All card drops recieved!\nShutting Down...",icon:"logo.png"});
+					shutdown(0);
 				}
 			} else {
 				$('.Window').fadeOut(250);
