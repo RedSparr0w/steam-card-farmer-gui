@@ -49,3 +49,12 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# save custom file changes
+!node_modules/
+node_modules/*
+!node_modules/steam-user/
+node_modules/steam-user/*
+!node_modules/steam-user/components/
+node_modules/steam-user/components/*
+!node_modules/steam-user/components/apps.js
