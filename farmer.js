@@ -134,8 +134,6 @@ function checkMinPlaytime() {
 				return;
 			}
 			
-			fs.writeFileSync('./include/badgepage.html', body);
-		});
 			var lowHourApps = [];
 			var ownedPackages = client.licenses.map(function(license) {
 				var pkg = client.picsCache.packages[license.package_id].packageinfo;
@@ -145,11 +143,8 @@ function checkMinPlaytime() {
 			}).filter(function(pkg) {
 				return !(pkg.extended && pkg.extended.freeweekend);
 			});
-			var html=fs.readFileSync('./include/badgepage.html');
-			$_ = Cheerio.load(html);
+			$_ = Cheerio.load(body);
 			$_('.badge_row').each(function(i) {
-				$('#LoadingWindow progress').fadeIn(250).attr("max",$_('.badge_row').length).val(i+1);
-				client.emit("progress",i+1,$_('.badge_row').length);
 				var row = $_(this);
 				var overlay = row.find('.badge_row_overlay');
 				if(!overlay) {
@@ -324,6 +319,7 @@ function checkMinPlaytime() {
 			} else {
 				checkCardApps();
 			}
+		});
 	});
 }
 
