@@ -145,6 +145,7 @@ function checkMinPlaytime() {
 			});
 			$_ = Cheerio.load(body);
 			$_('.badge_row').each(function(i) {
+				console.log(i);
 				var row = $_(this);
 				var overlay = row.find('.badge_row_overlay');
 				if(!overlay) {
@@ -400,7 +401,7 @@ function checkCardApps() {
 					title.find('.badge_view_details').remove();
 					title = title.text().trim();
 					
-					new Notification("Steam Card Farmer",{body:"Idling app " + appid + " \"" + title + "\" - " + match[1] + " drop" + (match[1] == 1 ? '' : 's') + " remaining",icon:"logo.png"});
+					new Notification("Steam Card Farmer",{body:"Idling \"" + title + "\"\n" + match[1] + " drop" + (match[1] == 1 ? '' : 's') + " remaining",icon:"logo.png"});
 					client.gamesPlayed(parseInt(appid, 10));
 					$('#CurrentAppWindow img').attr("src","http://cdn.akamai.steamstatic.com/steam/apps/" + appid + "/header.jpg");
 					$('#CurrentAppWindow h4').html(title);
@@ -410,7 +411,7 @@ function checkCardApps() {
 			//fadeout loading window
 			log(totalDropsLeft + " card drop" + (totalDropsLeft == 1 ? '' : 's') + " remaining across " + appsWithDrops + " app" + (appsWithDrops == 1 ? '' : 's') + " (Page " + g_Page + ")");
 			if(totalDropsLeft == 0) {
-				if ($_('.badge_row').length/250 == Math.round($_('.badge_row').length/250)){
+				if ($_('.badge_row').length == 250){
 					log("No drops remaining on page "+g_Page);
 					g_Page++;
 					log("Checking page "+g_Page);
