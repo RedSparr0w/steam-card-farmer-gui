@@ -85,15 +85,6 @@ client.on('loggedOn', function() {
 	console.log(client);
 });
 
-client.on('progress', function(prog,total) {
-	if (prog==total){
-		$('#LoadingWindow progress').fadeOut(250).attr("max",total).val(total);
-	}else{
-		$('#LoadingWindow progress').fadeIn(250).attr("max",total).val(prog);
-	}
-	console.log("loaded: "+prog+"/"+total);
-});
-
 client.once('appOwnershipCached', function() {
 	log("Got app ownership info");
 	checkMinPlaytime();
@@ -119,7 +110,7 @@ client.on('error', function(e) {
 	}
 });
 
-function checkMinPlaytime() {
+function checkMinPlaytime(){
 	log("Checking app playtime...");
 	$('#LoadingWindow p').html('Checking app playtime...');
 	client.webLogOn();
@@ -164,7 +155,7 @@ function checkMinPlaytime() {
 				name = name.text().replace(/\n/g, '').replace(/\r/g, '').replace(/\t/g, '').trim();
 
 				// Check if app is owned
-				if(!client.ownsApp(appid)) {
+				if(!client.picsCache.apps.hasOwnProperty(appid)) {
 					log("Skipping app " + appid + " \"" + name + "\", not owned");
 					return;
 				}
@@ -236,28 +227,12 @@ function checkMinPlaytime() {
 				var lowAppsToIdle = [];
 				
 				if(newApps.length > 0) {
-					log("=========================================================");
-					log("WARNING: Proceeding will waive your right to a refund on\nthe following apps:\n  - " + newApps.map(function(app) { return app.name; }).join("\n  - ") +
+					function getResponseNewApps(){
+						switch(prompt("WARNING: Proceeding will waive your right to a refund on\nthe following apps:\n  - " + newApps.map(function(app) { return app.name; }).join("\n  - ") +
 						"\n\nDo you wish to continue?\n" +
 						"    y = yes, idle all of these apps and lose my refund\n" +
 						"    n = no, don't idle any of these apps and keep my refund\n" +
-						"    c = choose which apps to idle");
-					
-					prompt.start();
-					prompt.get({
-						"properties": {
-							"choice": {
-								"required": true,
-								"pattern": /^[yncYNC]$_/
-							}
-						}
-					}, function(err, result) {
-						if(err) {
-							log("ERROR: " + err.message);
-							return;
-						}
-						
-						switch(result.choice.toLowerCase()) {
+						"    c = choose which apps to idle").toLowerCase()) {
 							case 'y':
 								lowAppsToIdle = lowHourApps.map(function(app) { return app.appid; });
 								startErUp();
@@ -269,35 +244,29 @@ function checkMinPlaytime() {
 								break;
 							
 							case 'c':
-								var properties = {};
+								lowAppsToIdle = [];
 								lowHourApps.forEach(function(app) {
-									properties[app.appid] = {
-										"description": "Idle " + app.name + "? [y/n]",
-										"pattern": /^[ynYN]$_/,
-										"required": true
-									};
-								});
-								
-								prompt.get({"properties": properties}, function(err, result) {
-									for(var appid in result) {
-										if(isNaN(parseInt(appid, 10))) {
-											continue;
-										}
-										
-										if(result[appid].toLowerCase() == 'y') {
-											lowAppsToIdle.push(parseInt(appid, 10));
-										}
+									switch(prompt("Idle " + app.name + "? [y/n]").toLowerCase()){
+										case 'y':
+											lowAppsToIdle.push(app);
+											break;
+										case 'n':
+											break;
+										default:
+											break;
 									}
-									
-									startErUp();
 								});
+								startErUp();
+							default: 
+								getResponseNewApps();
 						}
-					});
+					}
+					getResponseNewApps();
 				} else {
 					lowAppsToIdle = lowHourApps.map(function(app) { return app.appid; });
 					startErUp();
 				}
-				
+					
 				function startErUp() {
 					if(lowAppsToIdle.length < 1) {
 						checkCardApps();
