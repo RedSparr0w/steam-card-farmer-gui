@@ -76,6 +76,7 @@ client.on('steamGuard', function(domain, callback, lastcode) {
 });
 
 client.on('loggedOn', function() {
+	client.setPersona(3);
 	$('.Error').html("");
 	log("Logged into Steam!");
 	$("#AppLogout").fadeIn(250);
@@ -136,7 +137,6 @@ function checkMinPlaytime(){
 			});
 			$_ = Cheerio.load(body);
 			$_('.badge_row').each(function(i) {
-				console.log(i);
 				var row = $_(this);
 				var overlay = row.find('.badge_row_overlay');
 				if(!overlay) {
@@ -266,7 +266,7 @@ function checkMinPlaytime(){
 					lowAppsToIdle = lowHourApps.map(function(app) { return app.appid; });
 					startErUp();
 				}
-					
+				
 				function startErUp() {
 					if(lowAppsToIdle.length < 1) {
 						checkCardApps();
@@ -291,7 +291,7 @@ function checkMinPlaytime(){
 		});
 	});
 }
-client.on('newItems', function(count) {
+client.on('newItems', function(count){
 	if(g_OwnedApps.length == 0 || count == 0) {
 		return;
 	}

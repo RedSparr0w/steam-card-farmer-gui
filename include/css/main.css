@@ -75,6 +75,9 @@ body{
 	margin:0px;
 	padding:0px;
 }
+#Menu i{
+	cursor:pointer !important;
+}
 #Menu #AppLogout:hover {
 	color:#e67e22;
 }
